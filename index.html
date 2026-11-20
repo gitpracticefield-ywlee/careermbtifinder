@@ -1,0 +1,584 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나를 찾아가는 길 | CAREER CODE</title>
+<style>
+:root{
+  --aqua:#A8D5D0;
+  --aqua-dark:#527F7A;
+  --aqua-light:#E8F3F0;
+  --beige:#E9DDCA;
+  --cream:#F8F5EF;
+  --sand:#D6C4AB;
+  --ink:#344642;
+  --muted:#87918A;
+  --white:#fffefa;
+  --line:#E9E7DF;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--cream);color:var(--ink);
+  font-family:"Noto Sans KR",Arial,sans-serif;
+}
+button{font:inherit;cursor:pointer}
+.shell{max-width:1120px;margin:auto;padding:35px 28px 60px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.brand{font-size:13px;font-weight:800;letter-spacing:3px}
+.brand span{color:var(--aqua-dark)}
+.header-note{font-size:12px;color:var(--muted);letter-spacing:1px}
+.panel{
+  background:var(--white);border:1px solid var(--line);
+  border-radius:24px;padding:38px;
+  box-shadow:0 12px 40px #34464208;
+}
+.hero-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:38px;align-items:center;
+}
+.eyebrow{
+  color:var(--aqua-dark);font-size:11px;
+  font-weight:800;letter-spacing:2px;
+}
+h1{font-size:clamp(38px,5vw,58px);line-height:1.25;
+  letter-spacing:-2px;margin:20px 0}
+.intro-text{font-size:15px;line-height:1.9;color:#77827b}
+.hero-image{
+  width:100%;height:370px;object-fit:cover;
+  border-radius:20px;
+}
+.image-wrap{position:relative}
+.image-caption{
+  position:absolute;bottom:16px;left:16px;
+  color:white;font-size:11px;letter-spacing:2px;
+  text-shadow:0 1px 5px #000;
+}
+.primary{
+  background:var(--aqua-dark);color:white;
+  border:0;border-radius:12px;padding:16px 28px;
+  font-weight:700;transition:.2s;
+}
+.primary:hover{background:#3E6964;transform:translateY(-2px)}
+.outline{
+  background:transparent;color:var(--aqua-dark);
+  border:1px solid var(--aqua-dark);border-radius:12px;
+  padding:14px 20px;font-weight:700;
+}
+.features{display:flex;gap:18px;flex-wrap:wrap;
+  margin:28px 0;color:var(--muted);font-size:12px}
+.feature{display:flex;align-items:center;gap:6px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--aqua-dark)}
+.divider{height:1px;background:var(--line);margin:25px 0}
+
+/* Quiz */
+.quiz-top{margin-bottom:32px}
+.progress-info{display:flex;justify-content:space-between;
+  font-size:12px;color:var(--muted);margin-bottom:12px}
+.progress{height:5px;background:#EAEDE8;border-radius:20px;overflow:hidden}
+.progress-fill{height:100%;background:var(--aqua-dark);
+  transition:width .4s ease}
+.quiz-grid{display:grid;grid-template-columns:1fr 1fr;gap:35px}
+.question-side{padding:12px 0}
+.question-num{font-size:12px;color:var(--aqua-dark);font-weight:800}
+.question-title{font-size:27px;line-height:1.5;
+  letter-spacing:-.8px;margin:20px 0}
+.question-hint{font-size:13px;color:var(--muted);line-height:1.7}
+.options{display:flex;flex-direction:column;gap:12px}
+.option{
+  width:100%;text-align:left;padding:19px;
+  border:1px solid var(--line);border-radius:13px;
+  background:white;color:var(--ink);
+  line-height:1.6;transition:.2s;
+}
+.option:hover{border-color:var(--aqua-dark);background:var(--aqua-light)}
+.option.selected{border:2px solid var(--aqua-dark);
+  background:var(--aqua-light);padding:18px}
+.option.selected:before{content:"✓  ";color:var(--aqua-dark);font-weight:bold}
+.quiz-actions{display:flex;justify-content:space-between;
+  margin-top:28px;gap:12px}
+button:disabled{opacity:.35;cursor:not-allowed;transform:none}
+
+/* Page transition */
+.page-turn{animation:pageTurn .42s ease both}
+@keyframes pageTurn{
+  0%{opacity:0;transform:perspective(900px) rotateY(-9deg) translateX(18px)}
+  100%{opacity:1;transform:perspective(900px) rotateY(0) translateX(0)}
+}
+
+/* Result */
+.result-header{text-align:center;padding:10px 0 28px}
+.result-symbol{
+  width:104px;height:104px;margin:0 auto 22px;
+  display:grid;place-items:center;border-radius:50%;
+  background:var(--aqua-light);font-size:48px;
+}
+.result-title{font-size:34px;letter-spacing:-1px;margin:14px 0}
+.result-sub{color:var(--muted);font-size:14px;line-height:1.8}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.result-card{
+  background:#F8F7F2;border-radius:17px;padding:23px;
+}
+.result-card h3{font-size:14px;margin:0 0 14px}
+.result-card p{font-size:13px;line-height:1.9;color:#768079;margin:0}
+.job-list{display:flex;flex-wrap:wrap;gap:8px}
+.job{
+  background:var(--aqua-light);color:var(--aqua-dark);
+  border-radius:20px;padding:9px 13px;font-size:12px;
+}
+.score-row{margin:13px 0}
+.score-label{display:flex;justify-content:space-between;
+  font-size:12px;margin-bottom:7px}
+.score-track{height:6px;background:#E7E6DE;border-radius:20px}
+.score-value{height:6px;background:var(--aqua-dark);border-radius:20px}
+.result-actions{display:flex;gap:10px;margin-top:25px}
+.result-actions button{flex:1}
+.saved-label{display:inline-block;background:var(--aqua-light);
+  color:var(--aqua-dark);padding:8px 12px;border-radius:20px;
+  font-size:11px;margin-bottom:15px}
+footer{text-align:center;margin-top:25px;color:#A4A79E;font-size:11px}
+
+.hidden{display:none!important}
+
+@media(max-width:700px){
+  .shell{padding:20px 14px 40px}
+  .panel{padding:24px 19px;border-radius:19px}
+  header{margin-bottom:18px}
+  .header-note{font-size:10px}
+  .hero-grid,.quiz-grid,.result-grid{grid-template-columns:1fr}
+  .hero-grid{gap:22px}
+  .hero-image{height:230px}
+  h1{font-size:39px}
+  .question-title{font-size:23px}
+  .question-side{padding:0}
+  .options{gap:10px}
+  .option{padding:16px}
+  .option.selected{padding:15px}
+  .result-title{font-size:28px}
+  .result-actions{flex-direction:column}
+  .features{gap:12px}
+}
+</style>
+</head>
+
+<body>
+<div class="shell">
+<header>
+  <div class="brand">CAREER <span>CODE.</span></div>
+  <div class="header-note">SELF DISCOVERY · CAREER JOURNEY</div>
+</header>
+
+<main class="panel">
+
+<!-- HERO -->
+<section id="home" class="page-turn">
+ <div class="hero-grid">
+  <div>
+   <div class="eyebrow">A JOURNEY TO YOURSELF</div>
+   <h1>나를 찾아가는 길</h1>
+   <p class="intro-text">
+    내가 좋아하는 일, 잘하는 일,<br>
+    그리고 나에게 어울리는 일.<br>
+    10개의 질문을 통해 나만의 커리어 방향을 발견해 보세요.
+   </p>
+   <div class="features">
+    <span class="feature"><i class="dot"></i>10 QUESTIONS</span>
+    <span class="feature"><i class="dot"></i>4 PERSONALITIES</span>
+    <span class="feature"><i class="dot"></i>3 MINUTES</span>
+   </div>
+   <button class="primary" onclick="start()">나의 커리어 찾기 →</button>
+  </div>
+  <div class="image-wrap">
+   <img class="hero-image"
+    src="https://images.unsplash.com/photo-1658756562863-2b67fb5737aa?auto=format&blend=000000&blend-alpha=10&blend-mode=normal&blend-w=1&crop=faces%2Cedges&fit=crop&h=630&ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzQ3NTY4MTIxfA&ixlib=rb-4.1.0&mark=https%3A%2F%2Fimages.unsplash.com%2Fopengraph%2Flogo.png&mark-align=top%2Cleft&mark-pad=50&mark-w=64&q=60&w=1200"
+    alt="뉴욕 맨해튼의 석양과 스카이라인">
+   <div class="image-caption">NEW YORK · GOLDEN HOUR</div>
+  </div>
+ </div>
+ <div class="divider"></div>
+ <p class="intro-text" style="font-size:12px">
+  나를 이해하는 작은 시작이 더 나은 내일을 만듭니다.
+ </p>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" class="hidden">
+ <div class="quiz-top">
+  <div class="progress-info">
+   <span id="progressText">QUESTION 01 / 10</span>
+   <span id="progressPercent">10%</span>
+  </div>
+  <div class="progress">
+   <div class="progress-fill" id="progressFill"></div>
+  </div>
+ </div>
+
+ <div id="quizContent" class="page-turn">
+  <div class="quiz-grid">
+   <div class="question-side">
+    <div class="question-num" id="qNum">QUESTION 01</div>
+    <h2 class="question-title" id="qTitle"></h2>
+    <p class="question-hint">
+     가장 평소의 나와 가까운 선택지를 골라주세요.
+     정답은 없습니다.
+    </p>
+   </div>
+   <div>
+    <div class="options" id="options"></div>
+    <div class="quiz-actions">
+     <button class="outline" onclick="previous()">← 이전</button>
+     <button class="primary" id="nextBtn" onclick="next()" disabled>다음 →</button>
+    </div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="hidden page-turn">
+ <div class="result-header">
+  <div class="saved-label" id="savedLabel">YOUR CAREER PERSONALITY</div>
+  <div class="result-symbol" id="resultIcon"></div>
+  <div class="eyebrow">YOUR CAREER PERSONA</div>
+  <h2 class="result-title" id="resultName"></h2>
+  <p class="result-sub" id="resultDesc"></p>
+ </div>
+
+ <div class="result-grid">
+  <div class="result-card">
+   <h3>✦ 나의 핵심 강점</h3>
+   <p id="strength"></p>
+  </div>
+  <div class="result-card">
+   <h3>✦ 성장 포인트</h3>
+   <p id="weakness"></p>
+  </div>
+  <div class="result-card">
+   <h3>✦ 추천 직무 TOP 3</h3>
+   <div class="job-list" id="jobs"></div>
+  </div>
+  <div class="result-card">
+   <h3>✦ 잘 맞는 업무 환경</h3>
+   <p id="environment"></p>
+  </div>
+  <div class="result-card">
+   <h3>✦ 나의 커리어 한 걸음</h3>
+   <p id="tip"></p>
+  </div>
+  <div class="result-card">
+   <h3>✦ 성향 분포</h3>
+   <div id="scores"></div>
+  </div>
+ </div>
+
+ <div class="result-actions">
+  <button class="primary" onclick="copyResult()">결과 복사 ↗</button>
+  <button class="outline" onclick="restart()">새롭게 진단하기 ↻</button>
+ </div>
+ <p class="result-sub" style="text-align:center;margin-top:20px;font-size:11px">
+  결과는 이 기기의 브라우저에 저장됩니다.
+ </p>
+</section>
+
+</main>
+<footer>CAREER CODE · FIND YOUR OWN WAY</footer>
+</div>
+
+<script>
+const KEY="careerCodeResult_v2";
+
+const personas={
+ P:{
+  name:"길을 여는 개척가",
+  english:"THE TRAILBLAZER",
+  icon:"🧭",
+  desc:"당신은 익숙한 길보다 새로운 가능성을 선택하는 사람입니다. 생각에 머무르기보다 직접 움직이며 길을 만들어 갑니다. 도전과 성취가 당신을 성장시킵니다.",
+  strength:"빠른 실행력과 추진력, 기회를 발견하는 감각이 강점입니다. 불확실한 상황에서도 행동을 시작할 수 있습니다.",
+  weakness:"속도를 중시하다 보면 세부적인 검토나 장기적인 관리가 부족해질 수 있습니다.",
+  jobs:["사업개발 매니저","창업가","프로젝트 매니저"],
+  environment:"자율적인 의사결정이 가능하고 새로운 프로젝트와 도전을 장려하는 조직.",
+  tip:"작은 실행 목표를 설정하고 결과를 기록해 보세요. 추진력에 체계적인 관리 습관이 더해지면 더욱 크게 성장할 수 있습니다."
+ },
+ C:{
+  name:"생각을 빚는 창조가",
+  english:"THE CREATIVE MIND",
+  icon:"🎨",
+  desc:"당신은 평범한 일상에서도 새로운 아이디어를 발견하는 사람입니다. 다른 시각으로 문제를 바라보고 자신만의 방식으로 가치를 만들어 냅니다.",
+  strength:"창의력과 기획력, 상상력, 새로운 관점으로 문제를 해결하는 능력이 강점입니다.",
+  weakness:"아이디어가 많아 우선순위가 흔들리거나 완성 단계에서 집중력이 분산될 수 있습니다.",
+  jobs:["브랜드 기획자","콘텐츠 디렉터","서비스 기획자"],
+  environment:"자율성과 실험이 존중되고 새로운 아이디어를 실제 결과물로 발전시킬 수 있는 조직.",
+  tip:"아이디어를 작은 프로젝트로 만들어 완성해 보세요. 결과물을 포트폴리오로 축적하면 자신만의 전문성이 됩니다."
+ },
+ G:{
+  name:"사람을 잇는 조율가",
+  english:"THE CONNECTOR",
+  icon:"🌿",
+  desc:"당신은 사람 사이에서 가능성을 발견하는 사람입니다. 서로 다른 생각을 연결하고 함께 성장하는 과정에서 큰 만족과 에너지를 얻습니다.",
+  strength:"공감 능력과 소통 능력, 협업, 갈등 조정과 관계 형성 능력이 강점입니다.",
+  weakness:"다른 사람의 기대를 우선시하다 자신의 목표와 의견을 뒤로 미룰 수 있습니다.",
+  jobs:["인사·HR 매니저","조직문화 담당자","교육 기획자"],
+  environment:"소통이 활발하고 구성원의 성장과 협력을 중요하게 생각하는 조직.",
+  tip:"자신의 의견과 전문 분야를 분명하게 표현해 보세요. 사람을 이해하는 능력에 전문성을 더하면 더욱 차별화됩니다."
+ },
+ A:{
+  name:"답을 찾는 탐구가",
+  english:"THE ANALYST",
+  icon:"🔎",
+  desc:"당신은 복잡한 문제 속에서 핵심을 찾아내는 사람입니다. 정보를 정리하고 논리적으로 판단하며 정확한 답을 찾아가는 과정에서 강점을 발휘합니다.",
+  strength:"논리적 사고와 분석력, 꼼꼼함, 문제 해결 능력과 체계적인 업무 수행 능력이 강점입니다.",
+  weakness:"완벽한 답을 찾으려다 결정이 늦어지거나 예상하지 못한 변화에 유연하게 대응하기 어려울 수 있습니다.",
+  jobs:["데이터 분석가","전략 기획자","재무·회계 전문가"],
+  environment:"명확한 목표와 기준이 있고 전문성과 데이터를 활용할 수 있는 체계적인 조직.",
+  tip:"분석한 내용을 작은 실행으로 연결해 보세요. 정확한 판단력에 실행 경험이 더해지면 전문성이 더욱 높아집니다."
+ }
+};
+
+const questions=[
+ {q:"새로운 프로젝트를 맡게 되었다. 가장 먼저 하고 싶은 일은?",a:[
+  ["일단 시작하고 진행하면서 방향을 잡는다","P"],
+  ["새롭고 차별화된 아이디어를 구상한다","C"],
+  ["함께할 사람들과 의견을 나눈다","G"],
+  ["목표와 필요한 정보를 먼저 분석한다","A"]]},
+ {q:"팀 과제를 할 때 가장 자신 있는 역할은?",a:[
+  ["팀을 이끌고 실행을 주도하는 역할","P"],
+  ["새로운 아이디어와 방향을 제시하는 역할","C"],
+  ["팀원들의 의견을 조율하는 역할","G"],
+  ["자료를 정리하고 논리를 만드는 역할","A"]]},
+ {q:"직장에서 가장 중요하게 생각하는 가치는?",a:[
+  ["성장과 도전","P"],
+  ["창의성과 자유","C"],
+  ["사람과 협력","G"],
+  ["전문성과 체계","A"]]},
+ {q:"예상하지 못한 문제가 발생했다. 나의 대응은?",a:[
+  ["빠르게 해결책을 실행한다","P"],
+  ["기존과 다른 해결 방법을 찾아본다","C"],
+  ["관련된 사람들과 함께 해결한다","G"],
+  ["원인을 분석하고 근본적인 해결책을 찾는다","A"]]},
+ {q:"가장 보람을 느끼는 순간은?",a:[
+  ["어려운 목표를 달성했을 때","P"],
+  ["내 아이디어가 실제 결과물이 되었을 때","C"],
+  ["함께한 사람들이 성장했을 때","G"],
+  ["복잡한 문제의 원인을 밝혔을 때","A"]]},
+ {q:"어떤 업무 환경에서 가장 몰입할 수 있을까?",a:[
+  ["빠르게 변화하고 도전적인 환경","P"],
+  ["자율적이고 창의적인 환경","C"],
+  ["소통과 협업이 활발한 환경","G"],
+  ["체계적이고 전문성을 발휘하는 환경","A"]]},
+ {q:"새로운 기술이나 도구를 배울 때 나는?",a:[
+  ["직접 사용하면서 빠르게 익힌다","P"],
+  ["응용해서 새로운 활용법을 생각한다","C"],
+  ["다른 사람과 함께 배우고 공유한다","G"],
+  ["원리와 구조부터 이해한다","A"]]},
+ {q:"나에게 가장 듣고 싶은 칭찬은?",a:[
+  ["정말 추진력이 좋고 도전적이야!","P"],
+  ["정말 독창적이고 아이디어가 좋아!","C"],
+  ["함께 일하면 정말 편하고 즐거워!","G"],
+  ["정확하고 분석적으로 일을 잘해!","A"]]},
+ {q:"내가 선호하는 업무 방식은?",a:[
+  ["목표를 정하고 빠르게 결과를 만든다","P"],
+  ["다양한 방법을 실험하고 개선한다","C"],
+  ["동료들과 협력하며 진행한다","G"],
+  ["계획과 기준에 맞춰 체계적으로 진행한다","A"]]},
+ {q:"5년 뒤 내가 가장 이루고 싶은 모습은?",a:[
+  ["새로운 사업이나 프로젝트를 이끄는 사람","P"],
+  ["나만의 아이디어와 전문성을 가진 사람","C"],
+  ["사람들의 성장과 조직에 기여하는 사람","G"],
+  ["특정 분야에서 깊은 전문성을 가진 사람","A"]]}
+];
+
+let current=0;
+let answers=Array(10).fill(null);
+let activeResult=null;
+
+const $=id=>document.getElementById(id);
+function show(id){
+ ["home","quiz","result"].forEach(x=>$(x).classList.add("hidden"));
+ $(id).classList.remove("hidden");
+ $(id).classList.remove("page-turn");
+ void $(id).offsetWidth;
+ $(id).classList.add("page-turn");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function start(){
+ current=0;
+ answers=Array(10).fill(null);
+ render();
+ show("quiz");
+}
+function render(){
+ const q=questions[current];
+ $("progressText").textContent=
+  `QUESTION ${String(current+1).padStart(2,"0")} / 10`;
+ $("progressPercent").textContent=`${(current+1)*10}%`;
+ $("progressFill").style.width=(current+1)*10+"%";
+ $("qNum").textContent=`QUESTION ${String(current+1).padStart(2,"0")}`;
+ $("qTitle").textContent=q.q;
+
+ $("options").innerHTML="";
+ q.a.forEach(([label,type])=>{
+  const b=document.createElement("button");
+  b.className="option"+(answers[current]===type?" selected":"");
+  b.textContent=label;
+  b.onclick=()=>{
+   answers[current]=type;
+   render();
+  };
+  $("options").appendChild(b);
+ });
+ $("nextBtn").disabled=!answers[current];
+ $("nextBtn").textContent=current===9?"결과 확인하기 →":"다음 →";
+}
+function previous(){
+ if(current===0)return;
+ current--;
+ render();
+ animateQuiz();
+}
+function next(){
+ if(!answers[current])return;
+ if(current<9){
+  current++;
+  render();
+  animateQuiz();
+ }else{
+  calculate();
+ }
+}
+function animateQuiz(){
+ const c=$("quizContent");
+ c.classList.remove("page-turn");
+ void c.offsetWidth;
+ c.classList.add("page-turn");
+}
+function calculate(){
+ const scores={P:0,C:0,G:0,A:0};
+ answers.forEach(x=>scores[x]++);
+ const max=Math.max(...Object.values(scores));
+ const tied=Object.keys(scores).filter(k=>scores[k]===max);
+ const winner=[...answers].reverse().find(x=>tied.includes(x));
+ const result={
+  winner,
+  scores,
+  date:new Date().toISOString()
+ };
+ localStorage.setItem(KEY,JSON.stringify(result));
+ activeResult=result;
+ displayResult(result,false);
+}
+function displayResult(result,saved){
+ activeResult=result;
+ const p=personas[result.winner];
+ $("resultIcon").textContent=p.icon;
+ $("resultName").textContent=p.name;
+ $("resultDesc").textContent=p.desc;
+ $("strength").textContent=p.strength;
+ $("weakness").textContent=p.weakness;
+ $("environment").textContent=p.environment;
+ $("tip").textContent=p.tip;
+ $("savedLabel").textContent=saved?"SAVED RESULT · 이전 진단 결과":"YOUR CAREER PERSONALITY";
+ $("jobs").innerHTML="";
+ p.jobs.forEach(j=>{
+  const span=document.createElement("span");
+  span.className="job";
+  span.textContent=j;
+  $("jobs").appendChild(span);
+ });
+ $("scores").innerHTML="";
+ ["P","C","G","A"].forEach(k=>{
+  const row=document.createElement("div");
+  row.className="score-row";
+  const label=document.createElement("div");
+  label.className="score-label";
+  const name=document.createElement("span");
+  name.textContent=personas[k].name;
+  const value=document.createElement("b");
+  value.textContent=(result.scores[k]*10)+"%";
+  label.append(name,value);
+  const track=document.createElement("div");
+  track.className="score-track";
+  const fill=document.createElement("div");
+  fill.className="score-value";
+  fill.style.width=(result.scores[k]*10)+"%";
+  track.appendChild(fill);
+  row.append(label,track);
+  $("scores").appendChild(row);
+ });
+ show("result");
+}
+function restart(){
+ localStorage.removeItem(KEY);
+ activeResult=null;
+ start();
+}
+function copyResult(){
+ if(!activeResult)return;
+ const p=personas[activeResult.winner];
+ const text=
+ `나의 커리어 유형: ${p.name}
+ ${p.english}
+
+${p.desc}
+
+[핵심 강점]
+${p.strength}
+
+[성장 포인트]
+${p.weakness}
+
+[추천 직무]
+${p.jobs.join(", ")}
+
+[업무 환경]
+${p.environment}
+
+[커리어 TIP]
+${p.tip}
+
+CAREER CODE | 나를 찾아가는 길`;
+ if(navigator.clipboard && window.isSecureContext){
+  navigator.clipboard.writeText(text)
+   .then(()=>alert("결과가 복사되었습니다."))
+   .catch(()=>fallbackCopy(text));
+ }else fallbackCopy(text);
+}
+function fallbackCopy(text){
+ const area=document.createElement("textarea");
+ area.value=text;
+ document.body.appendChild(area);
+ area.select();
+ try{
+  document.execCommand("copy");
+  alert("결과가 복사되었습니다.");
+ }catch(e){
+  alert("복사에 실패했습니다. 브라우저 권한을 확인해 주세요.");
+ }
+ area.remove();
+}
+
+// 이전 결과가 있으면 재접속 시 바로 표시
+(function restore(){
+ try{
+  const raw=localStorage.getItem(KEY);
+  if(raw){
+   const result=JSON.parse(raw);
+   if(personas[result.winner] &&
+      ["P","C","G","A"].includes(result.winner) &&
+      result.scores &&
+      ["P","C","G","A"].every(k=>
+       Number.isInteger(result.scores[k]) &&
+       result.scores[k]>=0 && result.scores[k]<=10
+      )){
+    displayResult(result,true);
+    return;
+   }
+  }
+ }catch(e){
+  localStorage.removeItem(KEY);
+ }
+ show("home");
+})();
+</script>
+</body>
+</html>
